@@ -1,14 +1,13 @@
 on: [push]
 
 jobs:
-  gitavscan:
-    runs-on: ubuntu-latest
-    name: Last Commit AV Scan
+  job_id:
+    name: "Scan Virus"
+    runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v2
+      - name: "Checkout Repository"
+        uses: "actions/checkout@v3.5.0"
         with:
-          fetch-depth: '1'
-      - name: Git AV Scan
-        uses: djdefi/gitavscan@main
-        with:
-          sha: ${{ github.sha }}
+          fetch-depth: 0
+      - name: "Scan Repository"
+        uses: "hugoalh/scan-virus-ghaction@v0.10.0"
