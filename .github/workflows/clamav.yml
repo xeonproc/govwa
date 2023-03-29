@@ -19,4 +19,4 @@ jobs:
       uses: djdefi/gitavscan@main
       with:
         full: '--full'
-        path: '.' # or replace '.' with the path to the directory to be scanned
+        sha: ${{ github.sha }}
