@@ -3,7 +3,7 @@ name: ClamAV Scan
 on:
   push:
     branches:
-      - main, master
+      - master
 
 jobs:
   clamav:
