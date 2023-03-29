@@ -15,6 +15,6 @@ jobs:
           sudo apt-get install -y clamav
       - name: Update ClamAV Database
         run: |
-          sudo freshclam
+          sudo freshclam --datadir=/var/lib/clamav
       - name: Scan Repository
         run: clamscan -r --exclude-dir=.git ./
