@@ -1,10 +1,7 @@
-name: ClamAV Scan
-
 on:
   push:
     branches:
       - master
-
 jobs:
   gitavscan:
     runs-on: ubuntu-latest
