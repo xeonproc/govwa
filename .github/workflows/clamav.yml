@@ -1,4 +1,9 @@
-on: [push]
+name: ClamAV Scan
+
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   gitavscan:
