@@ -1,26 +1,14 @@
-name: ClamAV Scan
-
-on:
-  push:
-    branches:
-      - main
+on: [push]
 
 jobs:
-  clamav:
+  gitavscan:
     runs-on: ubuntu-latest
+    name: History AV Scan
     steps:
-      - name: Install ClamAV
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y clamav
-      - name: Stop ClamAV Daemon
-        run: |
-          sudo systemctl stop clamav-daemon
-      - name: Update ClamAV Database
-        run: |
-          sudo freshclam --datadir=/var/lib/clamav
-      - name: Scan Repository
-        run: clamscan -r --exclude-dir=.git ./
-      - name: Start ClamAV Daemon
-        run: |
-          sudo systemctl start clamav-daemon
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: '0'
+    - name: Git AV Scan
+      uses: djdefi/gitavscan@main
+      with:
+        full: '--full'
