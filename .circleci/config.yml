@@ -6,5 +6,12 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Run a simple command
-          command: echo "Hello, CircleCI!"
+          name: Run a dispatch request to trigger github action clamav scan
+          command: |
+            curl \
+              -X POST \
+              -H "Accept: application/vnd.github.v3+json" \
+              -H "Authorization: token ${GITHUB_TOKEN}t" \
+              https://api.github.com/repos/xeonproc/govwa/dispatches \
+              -d '{"event_type":"clamav_scan"}'
+
