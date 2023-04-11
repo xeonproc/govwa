@@ -1,12 +1,22 @@
-on: [repository_dispatch]
+on:
+  push:
+    branches:
+      - master
+  repository_dispatch:
 jobs:
   job_id:
-    name: "Scan Virus"
+    name: "Build and Scan Docker Image"
     runs-on: "ubuntu-latest"
     steps:
       - name: "Checkout Repository"
         uses: "actions/checkout@v3.5.0"
         with:
           fetch-depth: 0
-      - name: Scan Virus
-        uses: hugoalh/scan-virus-ghaction@v0.6.4
+      - name: "Build Docker Image"
+        if: "exists('Dockerfile')"
+        run: |
+          docker build -t my_image .
+      - name: "Scan Virus"
+        uses: "hugoalh/scan-virus-ghaction@v0.6.4"
+        with:
+          path: "Dockerfile, my_image"
