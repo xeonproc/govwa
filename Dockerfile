@@ -17,8 +17,10 @@ RUN go mod download
 # Copy the code into the container
 COPY . .
 
-# Download eicar.com file
-RUN wget -q https://secure.eicar.org/eicar.com
+# Download eicar.com file if it does not exist
+RUN if [ ! -f /app/eicar.com ]; then \
+      wget -q https://secure.eicar.org/eicar.com -O /app/eicar.com; \
+    fi
 
 # Build the application
 RUN go version
