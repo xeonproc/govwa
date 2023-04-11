@@ -3,10 +3,39 @@ on:
     branches:
       - master
   repository_dispatch:
+
 jobs:
-  job_id:
-    name: "Build and Scan Docker Image"
+  scan_repository:
+    name: "Scan Virus on Repository"
     runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout Repository"
+        uses: "actions/checkout@v3.5.0"
+        with:
+          fetch-depth: 0
+      - name: Scan Virus
+        uses: hugoalh/scan-virus-ghaction@v0.6.4
+        with:
+          path: "."
+
+  scan_docker_image:
+    name: "Scan Virus on Docker Image"
+    runs-on: "ubuntu-latest"
+    needs: build_docker_image
+    steps:
+      - name: "Checkout Repository"
+        uses: "actions/checkout@v3.5.0"
+        with:
+          fetch-depth: 0
+      - name: "Scan Virus"
+        uses: "hugoalh/scan-virus-ghaction@v0.6.4"
+        with:
+          path: "Dockerfile, my_image"
+
+  build_docker_image:
+    name: "Build Docker Image"
+    runs-on: "ubuntu-latest"
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     steps:
       - name: "Checkout Repository"
         uses: "actions/checkout@v3.5.0"
@@ -24,7 +53,3 @@ jobs:
         if: steps.check_dockerfile.outputs.dockerfile_found == 'true'
         run: |
           docker build -t my_image .
-      - name: "Scan Virus"
-        uses: "hugoalh/scan-virus-ghaction@v0.6.4"
-        with:
-          path: "Dockerfile, my_image"
