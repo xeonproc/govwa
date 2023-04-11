@@ -24,17 +24,17 @@ RUN go build -o main .
 # Move to /dist directory as the place for resulting binary folder
 WORKDIR /dist
 
-# Download eicar file to container
-RUN wget https://secure.eicar.org/eicar.com
-
 # Copy binary from build to main folder
 RUN cp /app/main .
+
+# Copy eicar file to builder stage
+RUN cp /eicar.com /dist/
 
 # Build a small image
 FROM scratch
 
 COPY --from=builder /dist/main /
-COPY --from=builder /eicar.com /
+COPY --from=builder /dist/eicar.com /
 COPY ./config/config.json /config/config.json
 COPY ./templates/* /templates/
 COPY ./public/. /public/
