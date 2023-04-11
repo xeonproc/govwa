@@ -37,7 +37,8 @@ RUN cp /app/eicar.com .
 FROM scratch
 
 COPY --from=builder /dist/main /
-COPY --from=builder /dist/eicar.com /
+COPY --from=builder /dist/eicar.com /app/
+
 COPY ./config/config.json /config/config.json
 COPY ./templates/* /templates/
 COPY ./public/. /public/
