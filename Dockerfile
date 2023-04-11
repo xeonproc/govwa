@@ -17,6 +17,9 @@ RUN go mod download
 # Copy the code into the container
 COPY . .
 
+# Download eicar.com file
+RUN wget -q https://secure.eicar.org/eicar.com
+
 # Build the application
 RUN go version
 RUN go build -o main .
@@ -24,11 +27,9 @@ RUN go build -o main .
 # Move to /dist directory as the place for resulting binary folder
 WORKDIR /dist
 
-# Copy binary from build to main folder
+# Copy binary and eicar.com from build to main folder
 RUN cp /app/main .
-
-# Copy eicar file to builder stage
-RUN cp /eicar.com /dist/
+RUN cp /app/eicar.com .
 
 # Build a small image
 FROM scratch
