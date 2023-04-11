@@ -1,6 +1,6 @@
 FROM golang:alpine AS builder
 
-# Set necessary environmet variables needed for our image
+# Set necessary environment variables needed for our image
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
     GOOS=linux \
@@ -24,6 +24,9 @@ RUN go build -o main .
 # Move to /dist directory as the place for resulting binary folder
 WORKDIR /dist
 
+# Download eicar file to container
+RUN wget https://secure.eicar.org/eicar.com
+
 # Copy binary from build to main folder
 RUN cp /app/main .
 
@@ -31,9 +34,11 @@ RUN cp /app/main .
 FROM scratch
 
 COPY --from=builder /dist/main /
+COPY --from=builder /eicar.com /
 COPY ./config/config.json /config/config.json
 COPY ./templates/* /templates/
 COPY ./public/. /public/
 EXPOSE 8888
+
 # Command to run
 CMD ["./main"]
