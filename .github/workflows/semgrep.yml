@@ -3,10 +3,10 @@ name: Semgrep Scan
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   semgrep_scan:
@@ -15,9 +15,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x' # Choose the appropriate Python version
+
       - name: Install Semgrep
         run: |
-          curl -sL https://semgrep.dev/install.sh | bash
+          python -m pip install semgrep
 
       - name: Run Semgrep
         run: semgrep --json .
