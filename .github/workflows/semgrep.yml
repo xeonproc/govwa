@@ -25,4 +25,4 @@ jobs:
           python -m pip install semgrep
 
       - name: Run Semgrep
-        run: semgrep --json .
+        run: semgrep .
