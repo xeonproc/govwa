@@ -1996,7 +1996,7 @@ if (typeof jQuery === 'undefined') {
       '[data-target="' + target + '"],' +
       this.selector + '[href="' + target + '"]'
 
-    var active = $(selector)
+    var active = $.find(selector)
       .parents('li')
       .addClass('active')
 
@@ -2010,7 +2010,7 @@ if (typeof jQuery === 'undefined') {
   }
 
   ScrollSpy.prototype.clear = function () {
-    $(this.selector)
+    $.find(this.selector)
       .parentsUntil(this.options.target, '.active')
       .removeClass('active')
   }
